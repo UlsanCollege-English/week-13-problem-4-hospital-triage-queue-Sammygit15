@@ -1,27 +1,19 @@
-
 def select_patients(patients, k):
-    """
-    Select up to k patient names in the order they should be called.
+    # Edge cases
+    if k == 0 or not patients:
+        return []
 
-    Patients are dictionaries with:
-      - "name": string
-      - "severity": integer 1 (most urgent) to 5 (least urgent)
-      - "arrival_order": integer, smaller means arrived earlier
+    # Sort patients by (severity, arrival_order)
+    sorted_patients = sorted(
+        patients,
+        key=lambda p: (p["severity"], p["arrival_order"])
+    )
 
-    Priority rules:
-      1. Lower severity number first.
-      2. If severity ties, lower arrival_order first.
+    # Take the first k names (or fewer if fewer exist)
+    selected = sorted_patients[:k]
 
-    Return a list of names in the correct order. If k is 0 or there are
-    no patients, return [].
-    """
-
-    # TODO Steps 1–3: Restate the problem, and list input, output, and key fields.
-    # TODO Steps 4–5: Decide whether to use sorting or a priority queue; write pseudocode.
-    # TODO Step 6: Implement the selection logic to pick the top k patients.
-    # TODO Step 7: Test with small examples (including empty list and k=0).
-    # TODO Step 8: Confirm the time complexity is about O(n log n).
-    pass
+    # Return list of names only
+    return [p["name"] for p in selected]
 
 
 if __name__ == "__main__":
@@ -31,4 +23,4 @@ if __name__ == "__main__":
         {"name": "Bella", "severity": 1, "arrival_order": 6},
         {"name": "Chris", "severity": 1, "arrival_order": 2},
     ]
-    print(select_patients(sample_patients, 2))
+    print(select_patients(sample_patients, 2))  # Expected: ['Chris', 'Bella']
